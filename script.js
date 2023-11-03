@@ -117,12 +117,14 @@ function game(){
 
     // Play five rounds
     for (let i = 0; i < 5; i++){
+        // Players choice, call the function
         playerChoice = playersChoice();
+        // Play the round and inform the return value to console
         console.log(playRound(playerChoice, getComputerChoice()));
-
+        // Inform the situation after every round
         console.log(`Your point total is ${yourScore} and computers point total is ${opponentScore}`);
     }
-
+    // Declare the ending result
     if (opponentScore > yourScore){
         console.log(`You lost the game with score of ${yourScore} - ${opponentScore}`);
     }
@@ -132,8 +134,9 @@ function game(){
     else{
         console.log(`Game was a draw with score of ${yourScore} - ${opponentScore}`);
     }
-
+    // Ending notes
     console.log("If you want to play again, type game() in to the browsers console");
 }
 
+// Start game when loaded
 game();
