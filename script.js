@@ -2,64 +2,113 @@
 let yourScore = 0;
 let opponentScore = 0;
 
+let yourScoreText = "";
+let opponentScoreText = "";
+
+let gameParagraph = "";
+
+// Load up stuff after DOM has loaded
+document.addEventListener("DOMContentLoaded", () => {
+    // Scoreboard
+
+    yourScoreText = document.querySelector(".yourScore");
+    opponentScoreText = document.querySelector(".opponentScore");
+
+    updateScore();
+
+    // Paragraph
+
+    gameParagraph = document.querySelector("p");
+
+    // Buttons
+    const buttons = document.querySelectorAll("button");
+    buttonsArray = Array.from(buttons);
+
+    for(let i = 0; i <= 2; i++){
+        buttonsArray[i].addEventListener("click", () => 
+        playRound(buttonsArray[i].textContent, getComputerChoice()));
+    }
+
+    buttonsArray[3].addEventListener("click", () =>{
+        opponentScore = 0;
+        yourScore = 0;
+
+        updateScore();
+        gameParagraph.textContent = "First to score five wins!"
+        buttonsArray[3].textContent = "Reset!";
+    })
+});
+
+
 // Play a round of RPS
 
 function playRound(playerSelection, computerSelection){
 
     playerSelection = String(playerSelection).toUpperCase();
     computerSelection = String(computerSelection);
-    /*/ Logic behind this choice is that
-        1) Check for draw
-            if not then proceed
-        2) Check what player chose
-        3) Check that against opponent choice
-        4) Declare winner
-    /*/
+
+    // First check if game is over
+
+    if(yourScore == 5 || opponentScore == 5){
+        gameParagraph.textContent = "The game has already ended, press play again to play again.";
+        return "Game has already ended";
+    }
 
     // Draw
     if(playerSelection == computerSelection.toUpperCase()){
-        return "Match was a draw!"
+        gameParagraph.textContent = "Match was a draw!"
+        return "Game was a draw";
     }
 
     // Functionality for selecting rock
     if(playerSelection == "rock".toUpperCase()){
-        // no need to uppercase this as these are hardcoded for computer, same goes for the rest of these
         if(computerSelection == "Scissors"){
             yourScore++;
-            return "Opponent chose Scissors. You Win!";
+            gameParagraph.textContent = "Opponent chose Scissors. You Win!";
         }
-        // no need for else-clause as this will be either resolved during if or it will land here
-        opponentScore++;
-        return "Opponent chose Paper. You Lose!";
+        else{
+            opponentScore++;
+            gameParagraph.textContent = "Opponent chose Paper. You Lose!";
+        }
     }
 
     // Functionality for selecting paper
     else if(playerSelection == "paper".toUpperCase()){
-        // no need to uppercase this as these are hardcoded for computer, same goes for the rest of these
+        
         if(computerSelection == "Scissors"){
             opponentScore++;
-            return "Opponent chose Scissors. You Lose!";
+            gameParagraph.textContent = "Opponent chose Scissors. You Lose!";
         } 
-        // no need for else-clause as this will be either resolved during if or it will land here
-        yourScore++;
-        return "Opponent chose Rock. You Win!";
+        else{
+            yourScore++;
+            gameParagraph.textContent = "Opponent chose Rock. You Win!";
+        }
     }
 
     // Functionality for selecting scissors
     else if(playerSelection == "scissors".toUpperCase()){
-        // no need to uppercase this as these are hardcoded for computer, same goes for the rest of these
+        
         if(computerSelection == "Rock"){
             opponentScore++;
-            return "Opponent chose Rock. You Lose!";
+            gameParagraph.textContent = "Opponent chose Rock. You Lose!";
         } 
-        // no need for else-clause as this will be either resolved during if or it will land here
-        yourScore++;
-        return "Opponent chose Paper. You Win!";
+        else{
+            yourScore++;
+            gameParagraph.textContent = "Opponent chose Paper. You Win!";
+        }
     }
 
     // Just a failsafe
 
-     else return "Something went wrong";
+     else{
+        gameParagraph.textContent = "Something went wrong";
+        return "Something went wrong";
+     }
+
+     // Check if the game is ending
+     
+     updateScore();
+     return "Round ended";
 }
 
 // Get computers choice
@@ -86,57 +135,19 @@ function getComputerChoice(){
     // Return the choice
     return computerChoice;
 }
+// This has been called so many times, so reformatting it to a function
 
-// Players choice, in a separate function so that the choice will be in correct form and for clarity
+function updateScore(){
+    yourScoreText.textContent = yourScore;
+    opponentScoreText.textContent = opponentScore;
 
-function playersChoice(){
-    let correctForm = false;
-    let choice;
-    // Loop until player's prompt is passed
-    while(correctForm == false){
-        choice = prompt("Rock, paper or scissors?");
-        choice = String(choice).toUpperCase();
-        if (choice == "ROCK" || choice == "PAPER" || choice == "SCISSORS"){
-            correctForm = true;
-        }
+    if(yourScore == 5){
+        gameParagraph.textContent = (`You won the game with score of ${yourScore} - ${opponentScore}`);
+        buttonsArray[3].textContent = "Play again!";
     }
-    
-
-    return choice;
+    else if(opponentScore == 5){
+        gameParagraph.textContent = (`You lost the game with score of ${yourScore} - ${opponentScore}`);
+        buttonsArray[3].textContent = "Play again!";
+    }
 }
 
-// Actual game function
-
-function game(){
-    // Nullify scores
-    opponentScore = 0;
-    yourScore = 0;
-
-    // Initalize playerchoice
-    let playerChoice = 0;
-
-    // Play five rounds
-    for (let i = 0; i < 5; i++){
-        // Players choice, call the function
-        playerChoice = playersChoice();
-        // Play the round and inform the return value to console
-        console.log(playRound(playerChoice, getComputerChoice()));
-        // Inform the situation after every round
-        console.log(`Your point total is ${yourScore} and computers point total is ${opponentScore}`);
-    }
-    // Declare the ending result
-    if (opponentScore > yourScore){
-        console.log(`You lost the game with score of ${yourScore} - ${opponentScore}`);
-    }
-    else if (opponentScore < yourScore){
-        console.log(`You won the game with score of ${yourScore} - ${opponentScore}`);
-    }
-    else{
-        console.log(`Game was a draw with score of ${yourScore} - ${opponentScore}`);
-    }
-    // Ending notes
-    console.log("If you want to play again, type game() in to the browsers console");
-}
-
-// Start game when loaded
-game();
