@@ -4,9 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock-Paper-Scissors UI</title>
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <!-- <script src="script.js"></script> -->
 </head>
 <body>
-    <h1>This is the version of Rock-Paper-Scissors with an UI</h1>
+    <!-- Header -->
+    <div class="header">
+        <h1>This is the version of Rock-Paper-Scissors with an UI</h1>
+    </div>
+    <!-- Game area -->
+    <div class="gameArea">
+        <h2>Make your choice</h2>
+        <div class="pictures">
+            <button class="rockButton">Rock</button>
+            <button class="paperButton">Paper</button>
+            <button class="scissorsButton">Scissors</button>
+        </div>
+        <p>You chose something, opponent chose something, someone won!</p>
+        <div class="scores">
+            <table>
+                <tr>
+                    <th>Your score:</th>
+                    <th></th>
+                    <th>Opponent score:</th>
+                </tr>
+                <tr>
+                    <td class="yourScore">1</td>
+                    <td></td>
+                    <td class="opponentScore">3</td>
+                </tr>
+            </table>
+        </div>
+        <button class="resetButton">Reset!</button>
+    </div>
+
+    <div class="footer">
+        <h3>Copyright by Juho Roivas 2023</h2>
+
+    </div>
 </body>
 </html>
